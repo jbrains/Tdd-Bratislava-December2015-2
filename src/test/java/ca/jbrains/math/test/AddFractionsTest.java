@@ -42,17 +42,26 @@ public class AddFractionsTest {
 
     public static class Fraction {
         private int intValue;
+        private int numerator;
+        private int denominator;
 
         public Fraction(int intValue) {
             this.intValue = intValue;
         }
 
         public Fraction(int numerator, int denominator) {
-
+            this.numerator = numerator;
+            this.denominator = denominator;
         }
 
         public Fraction plus(Fraction that) {
-            return new Fraction(this.intValue + that.intValue);
+            if (this.denominator == 0)
+                return new Fraction(this.intValue + that.intValue);
+            else
+                return new Fraction(
+                        this.numerator + that.numerator,
+                        this.denominator);
+
         }
 
         public int intValue() {
@@ -60,11 +69,11 @@ public class AddFractionsTest {
         }
 
         public int getNumerator() {
-            return 3;
+            return numerator;
         }
 
         public int getDenominator() {
-            return 5;
+            return denominator;
         }
     }
 }
