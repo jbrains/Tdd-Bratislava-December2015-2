@@ -41,12 +41,11 @@ public class AddFractionsTest {
     }
 
     public static class Fraction {
-        private int intValue;
         private int numerator;
         private int denominator;
 
         public Fraction(int intValue) {
-            this.intValue = intValue;
+            this(intValue, 1);
         }
 
         public Fraction(int numerator, int denominator) {
@@ -55,17 +54,14 @@ public class AddFractionsTest {
         }
 
         public Fraction plus(Fraction that) {
-            if (this.denominator == 0)
-                return new Fraction(this.intValue + that.intValue);
-            else
-                return new Fraction(
-                        this.numerator + that.numerator,
-                        this.denominator);
+            return new Fraction(
+                    this.numerator + that.numerator,
+                    this.denominator);
 
         }
 
         public int intValue() {
-            return intValue;
+            return numerator;
         }
 
         public int getNumerator() {
