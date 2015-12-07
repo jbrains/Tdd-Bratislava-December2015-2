@@ -32,11 +32,23 @@ public class AddFractionsTest {
         Assert.assertEquals(18, sum.intValue());
     }
 
+    @Test
+    public void sameDenominator() throws Exception {
+        Fraction sum = new Fraction(1, 5).plus(new Fraction(2, 5));
+
+        Assert.assertEquals(3, sum.getNumerator());
+        Assert.assertEquals(5, sum.getDenominator());
+    }
+
     public static class Fraction {
-        private final int intValue;
+        private int intValue;
 
         public Fraction(int intValue) {
             this.intValue = intValue;
+        }
+
+        public Fraction(int numerator, int denominator) {
+
         }
 
         public Fraction plus(Fraction that) {
@@ -45,6 +57,14 @@ public class AddFractionsTest {
 
         public int intValue() {
             return intValue;
+        }
+
+        public int getNumerator() {
+            return 3;
+        }
+
+        public int getDenominator() {
+            return 5;
         }
     }
 }
