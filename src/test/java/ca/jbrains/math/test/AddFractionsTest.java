@@ -13,7 +13,6 @@ public class AddFractionsTest {
     }
 
     @Test
-    @Ignore("WIP")
     public void notZeroPlusZero() throws Exception {
         Fraction sum = new Fraction(7).plus(new Fraction(0));
 
@@ -28,7 +27,7 @@ public class AddFractionsTest {
         }
 
         public Fraction plus(Fraction that) {
-            return new Fraction(0);
+            return this;
         }
 
         public int intValue() {
