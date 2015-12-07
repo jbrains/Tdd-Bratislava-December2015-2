@@ -80,5 +80,25 @@ public class AddFractionsTest {
         public int getDenominator() {
             return denominator;
         }
+
+        @Override
+        public boolean equals(Object other) {
+            if (other instanceof Fraction) {
+                Fraction that = (Fraction) other;
+                return this.numerator * that.denominator
+                        == this.denominator * that.numerator;
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return -762;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%d/%d", numerator, denominator);
+        }
     }
 }
