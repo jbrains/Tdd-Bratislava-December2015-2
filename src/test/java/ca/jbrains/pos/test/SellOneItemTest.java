@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class SellOneItemTest {
     @Test
@@ -12,7 +13,6 @@ public class SellOneItemTest {
         final Display display = new Display();
         final Sale sale = new Sale(display, new HashMap<String, String>() {{
             put("12345", "EUR 7.95");
-            put("23456", "EUR 12.50");
         }});
 
         sale.onBarcode("12345");
@@ -21,11 +21,12 @@ public class SellOneItemTest {
     }
 
     @Test
-    public void anotherProductFound() throws Exception {
+    public void productFoundAmongOthers() throws Exception {
         final Display display = new Display();
-        final Sale sale = new Sale(display, new HashMap<String, String>() {{
-            put("12345", "EUR 7.95");
+        final Sale sale = new Sale(display, new TreeMap<String, String>() {{
+            put("1 anything that comes before 23456", "I don't care what this price is");
             put("23456", "EUR 12.50");
+            put("3 anything that comes after 23456", "I don't care what this price is, either");
         }});
 
         sale.onBarcode("23456");
