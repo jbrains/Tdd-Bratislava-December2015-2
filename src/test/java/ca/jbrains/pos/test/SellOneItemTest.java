@@ -11,9 +11,9 @@ public class SellOneItemTest {
     @Test
     public void productFound() throws Exception {
         final Display display = new Display();
-        final Sale sale = new Sale(display, new HashMap<String, String>() {{
+        final Sale sale = new Sale(display, new Sale.Catalog(new HashMap<String, String>() {{
             put("12345", "EUR 7.95");
-        }});
+        }}));
 
         sale.onBarcode("12345");
 
@@ -23,11 +23,11 @@ public class SellOneItemTest {
     @Test
     public void productFoundAmongOthers() throws Exception {
         final Display display = new Display();
-        final Sale sale = new Sale(display, new TreeMap<String, String>() {{
+        final Sale sale = new Sale(display, new Sale.Catalog(new TreeMap<String, String>() {{
             put("1 anything that comes before 23456", "I don't care what this price is");
             put("23456", "EUR 12.50");
             put("3 anything that comes after 23456", "I don't care what this price is, either");
-        }});
+        }}));
 
         sale.onBarcode("23456");
 
@@ -37,7 +37,7 @@ public class SellOneItemTest {
     @Test
     public void productNotFound() throws Exception {
         final Display display = new Display();
-        final Sale sale = new Sale(display, new HashMap<String, String>());
+        final Sale sale = new Sale(display, new Sale.Catalog(new HashMap<String, String>()));
 
         sale.onBarcode("99999");
 
@@ -47,7 +47,7 @@ public class SellOneItemTest {
     @Test
     public void emptyBarcode() throws Exception {
         final Display display = new Display();
-        final Sale sale = new Sale(display, null);
+        final Sale sale = new Sale(display, new Sale.Catalog(null));
 
         sale.onBarcode("");
 
@@ -56,24 +56,36 @@ public class SellOneItemTest {
 
     public static class Sale {
         private Display display;
-        private final Map<String, String> pricesByBarcode;
+        private final Catalog catalog;
 
-        public Sale(Display display, Map<String, String> pricesByBarcode) {
+        public Sale(Display display, Catalog catalog) {
             this.display = display;
-            this.pricesByBarcode = pricesByBarcode;
+            this.catalog = catalog;
         }
 
         public void onBarcode(String barcode) {
             if ("".equals(barcode)) {
-                display.setText("Scanning error: empty barcode");
+                display.displayScannedEmptyBarcodeMessage();
                 return;
             }
 
-            final String price = pricesByBarcode.get(barcode);
+            final String price = catalog.findPrice(barcode);
             if (price == null)
-                display.setText(String.format("Product not found for %s", barcode));
+                display.displayProductNotFoundMessage(barcode);
             else
-                display.setText(price);
+                display.displayPrice(price);
+        }
+
+        private static class Catalog {
+            private final Map<String, String> pricesByBarcode;
+
+            private Catalog(Map<String, String> pricesByBarcode) {
+                this.pricesByBarcode = pricesByBarcode;
+            }
+
+            private String findPrice(String barcode) {
+                return pricesByBarcode.get(barcode);
+            }
         }
     }
 
@@ -84,8 +96,16 @@ public class SellOneItemTest {
             return text;
         }
 
-        public void setText(String text) {
-            this.text = text;
+        private void displayProductNotFoundMessage(String barcode) {
+            this.text = String.format("Product not found for %s", barcode);
+        }
+
+        private void displayPrice(String price) {
+            this.text = price;
+        }
+
+        private void displayScannedEmptyBarcodeMessage() {
+            this.text = "Scanning error: empty barcode";
         }
     }
 }
