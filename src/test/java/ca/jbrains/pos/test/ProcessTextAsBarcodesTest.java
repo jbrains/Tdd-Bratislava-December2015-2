@@ -5,6 +5,8 @@ import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
@@ -24,10 +26,28 @@ public class ProcessTextAsBarcodesTest {
         process(barcodeScannedListener, new StringReader(""));
     }
 
-    private void process(
-            BarcodeScannedListener barcodeScannedListener,
-            Reader source) {
+    @Test
+    public void oneBarcode() throws Exception {
+        final BarcodeScannedListener barcodeScannedListener
+                = context.mock(BarcodeScannedListener.class);
+
+        context.checking(new Expectations() {{
+            oneOf(barcodeScannedListener).onBarcode("::barcode::");
+        }});
+
+        process(barcodeScannedListener, new StringReader("::barcode::"));
     }
 
-    public interface BarcodeScannedListener {}
+    private void process(
+            BarcodeScannedListener barcodeScannedListener,
+            Reader source) throws IOException {
+
+        final String line = new BufferedReader(source).readLine();
+        if (line != null)
+            barcodeScannedListener.onBarcode(line);
+    }
+
+    public interface BarcodeScannedListener {
+        void onBarcode(String barcode);
+    }
 }
