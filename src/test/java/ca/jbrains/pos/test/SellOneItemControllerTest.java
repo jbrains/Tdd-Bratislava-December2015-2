@@ -66,7 +66,6 @@ public class SellOneItemControllerTest {
             this.display = display;
         }
 
-        // CONTRACT We assume barcode is not empty.
         public void onBarcode(String barcode) {
             final Price price = catalog.findPrice(barcode);
             if (price == null)
