@@ -77,6 +77,22 @@ public class ProcessTextAsBarcodesTest {
         ));
     }
 
+    @Test
+    public void sameProductSeveralTimes() throws Exception {
+        final BarcodeScannedListener barcodeScannedListener
+                = context.mock(BarcodeScannedListener.class);
+
+        context.checking(new Expectations() {{
+            exactly(4).of(barcodeScannedListener).onBarcode("::barcode::");
+        }});
+
+        process(barcodeScannedListener, new StringReader("::barcode::"
+                + "\n::barcode::"
+                + "\n::barcode::"
+                + "\n::barcode::"
+        ));
+    }
+
     private void process(
             BarcodeScannedListener barcodeScannedListener,
             Reader source) throws IOException {
