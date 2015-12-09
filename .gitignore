@@ -4,4 +4,7 @@
 classes/
 *.class
 
+.gradle/
+build/
+
 
