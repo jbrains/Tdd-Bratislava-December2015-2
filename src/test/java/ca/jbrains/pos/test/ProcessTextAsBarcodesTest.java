@@ -1,5 +1,7 @@
 package ca.jbrains.pos.test;
 
+import ca.jbrains.pos.BarcodeScannedListener;
+import ca.jbrains.pos.TextCommandInterpreter;
 import org.jmock.Expectations;
 import org.jmock.integration.junit4.JUnitRuleMockery;
 import org.junit.Rule;
@@ -21,7 +23,7 @@ public class ProcessTextAsBarcodesTest {
             never(barcodeScannedListener);
         }});
 
-        textCommandInterpreter.process(new StringReader(""));
+        textCommandInterpreter.interpretCommands(new StringReader(""));
     }
 
     @Test
@@ -30,7 +32,7 @@ public class ProcessTextAsBarcodesTest {
             oneOf(barcodeScannedListener).onBarcode("::barcode::");
         }});
 
-        textCommandInterpreter.process(new StringReader("::barcode::"));
+        textCommandInterpreter.interpretCommands(new StringReader("::barcode::"));
     }
 
     @Test
@@ -42,11 +44,11 @@ public class ProcessTextAsBarcodesTest {
             oneOf(barcodeScannedListener).onBarcode("::barcode 4::");
         }});
 
-        textCommandInterpreter.process(new StringReader(
+        textCommandInterpreter.interpretCommands(new StringReader(
                 "::barcode 1::"
-                + "\n::barcode 2::"
-                + "\n::barcode 3::"
-                + "\n::barcode 4::"
+                        + "\n::barcode 2::"
+                        + "\n::barcode 3::"
+                        + "\n::barcode 4::"
         ));
     }
     @Test
@@ -58,12 +60,12 @@ public class ProcessTextAsBarcodesTest {
             oneOf(barcodeScannedListener).onBarcode("::barcode 4::");
         }});
 
-        textCommandInterpreter.process(new StringReader(
+        textCommandInterpreter.interpretCommands(new StringReader(
                 "\n\n\n\n::barcode 1::"
-                + "\n\r\n\n\r\n::barcode 2::"
-                + "\n\n::barcode 3::"
-                + "\n\n\n\n\n\r\r\n\n\n\n::barcode 4::"
-                + "\n\n\r\r\r\n\n\n"
+                        + "\n\r\n\n\r\n::barcode 2::"
+                        + "\n\n::barcode 3::"
+                        + "\n\n\n\n\n\r\r\n\n\n\n::barcode 4::"
+                        + "\n\n\r\r\r\n\n\n"
         ));
     }
 
@@ -73,16 +75,12 @@ public class ProcessTextAsBarcodesTest {
             exactly(4).of(barcodeScannedListener).onBarcode("::barcode::");
         }});
 
-        textCommandInterpreter.process(new StringReader(
+        textCommandInterpreter.interpretCommands(new StringReader(
                 "::barcode::"
-                + "\n::barcode::"
-                + "\n::barcode::"
-                + "\n::barcode::"
+                        + "\n::barcode::"
+                        + "\n::barcode::"
+                        + "\n::barcode::"
         ));
     }
 
-    public interface BarcodeScannedListener {
-        // CONTRACT We assume barcode is not empty.
-        void onBarcode(String barcode);
-    }
 }

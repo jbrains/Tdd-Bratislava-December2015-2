@@ -1,6 +1,4 @@
-package ca.jbrains.pos.test;
-
-import ca.jbrains.pos.test.ProcessTextAsBarcodesTest.BarcodeScannedListener;
+package ca.jbrains.pos;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +11,7 @@ public class TextCommandInterpreter {
         this.barcodeScannedListener = barcodeScannedListener;
     }
 
-    void process(Reader source) throws IOException {
+    public void interpretCommands(Reader source) throws IOException {
         new BufferedReader(source).lines()
                 .filter((line) -> !line.isEmpty())
                 .forEach(barcodeScannedListener::onBarcode);
