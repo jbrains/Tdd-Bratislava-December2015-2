@@ -15,7 +15,11 @@ public class PointOfSaleTerminal {
                                 }}
                         ),
                         new EnglishLanguageDisplay(
-                                new SystemOutPostOffice()
+                                new LcdGateway(
+                                        "localhost",
+                                        7000,
+                                        "UTF-8"
+                                )
                         )
                 )
         ).interpretCommands(new InputStreamReader(System.in));
