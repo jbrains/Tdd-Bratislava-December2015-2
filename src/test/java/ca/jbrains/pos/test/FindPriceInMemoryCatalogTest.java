@@ -14,8 +14,8 @@ public class FindPriceInMemoryCatalogTest {
     public void productFound() throws Exception {
         final Price price = Price.cents(795);
         final InMemoryCatalog catalog
-                = new InMemoryCatalog(Collections.singletonMap("12345", price));
-        Assert.assertEquals(price, catalog.findPrice("12345"));
+                = new InMemoryCatalog(Collections.singletonMap("the barcode", price));
+        Assert.assertEquals(price, catalog.findPrice("the barcode"));
     }
 
     @Test
