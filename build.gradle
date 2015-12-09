@@ -9,6 +9,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.jmock:jmock:2.6.0'
     testCompile 'org.jmock:jmock-junit4:2.6.0'
-    testCompile 'com.pholser:junit-quickcheck-core:0.6-alpha-1'
-    testCompile 'com.pholser:junit-quickcheck-generators:0.6-alpha-1'
+    testCompile 'com.pholser:junit-quickcheck-core:0.5-beta-1'
+    testCompile 'com.pholser:junit-quickcheck-generators:0.5-beta-1'
 }
